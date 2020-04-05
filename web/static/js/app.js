@@ -1,5 +1,5 @@
 function generatePlots(id) {  
-    d3.json("./samples.json").then((importedData) => {
+    d3.json("../data/samples.json").then((importedData) => {
         var data = importedData;
         
         // BAR CHART //
@@ -102,7 +102,7 @@ function generateInfo(id) {
     var demoPanel = d3.select("#sample-metadata");
     demoPanel.html("");
 
-    d3.json("./samples.json").then((importedData) => {
+    d3.json("../data/samples.json").then((importedData) => {
         var data = importedData;
         var metadata = data.metadata;
         
@@ -120,7 +120,7 @@ function generateInfo(id) {
 function dropDownMenu() {
     var dropdown = d3.select("#selDataset");
 
-    d3.json("./samples.json").then((data) => {
+    d3.json("../data/samples.json").then((data) => {
 
         data.names.forEach((name) => {
             dropdown.append("option").text(name).property("value");
