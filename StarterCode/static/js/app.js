@@ -1,7 +1,8 @@
 function generatePlot(id) {  
     d3.json("./samples.json").then((importedData) => {
         var data = importedData;
-    
+        
+        // BAR CHART //
         // narrow data to selected ID
         var samples = data.samples.filter(x => x.id === id)[0];
         
@@ -26,7 +27,7 @@ function generatePlot(id) {
     
         var trace = [trace];
         
-        // create layout
+        // create layout for bar chart
         var layout = {
             title: "Most Frequent Bacteria",
             xaxis: {
@@ -54,6 +55,46 @@ function generatePlot(id) {
         };
         
         Plotly.newPlot("bar", trace, layout);
+        // BAR CHART //
+
+        // BUBBLE CHART //
+        var bubbleTrace = {
+            x: samples.otu_ids,
+            y: samples.sample_values,
+            text: samples.otu_labels,
+            marker: {
+                size: samples.sample_values,
+                color: samples.otu_ids
+            },
+            mode: "markers"
+        };
+
+        var bubbleTrace = [bubbleTrace];
+  
+        // create layout for bubble chart
+        var bubbleLayout = {
+            xaxis: {
+                title: 'OTU ID',
+                titlefont: {
+                    family: 'Arial, sans-serif',
+                    size: 14,
+                    color: 'grey'
+                }
+            },
+            yaxis: {
+                title: 'Sample Count',
+                titlefont: {
+                    family: 'Arial, sans-serif',
+                    size: 14,
+                    color: 'grey'
+                }
+            },
+            height: 700,
+            width: 1500
+        };
+  
+        Plotly.newPlot("bubble", bubbleTrace, bubbleLayout);
+        // BUBBLE CHART //
     });
 };
 
