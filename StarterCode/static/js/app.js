@@ -1,4 +1,4 @@
-function generatePlot(id) {  
+function generatePlots(id) {  
     d3.json("./samples.json").then((importedData) => {
         var data = importedData;
         
@@ -19,7 +19,7 @@ function generatePlot(id) {
             y: yAxisLabels,
             text: labels,
             marker: {
-                color: 'red'
+                color: 'maroon'
             },
             type:"bar",
             orientation: "h",
@@ -98,9 +98,26 @@ function generatePlot(id) {
     });
 };
 
+function generateInfo(id) {
+    var demoPanel = d3.select("#sample-metadata");
+    demoPanel.html("");
+
+    d3.json("./samples.json").then((importedData) => {
+        var data = importedData;
+        var metadata = data.metadata;
+        
+        // narrow data to selected ID
+        var selection = metadata.filter(x => x.id.toString() === id)[0];
+
+        // grab the necessary demographic data data for the id and append the info to the panel
+        Object.entries(selection).forEach((pair) => {   
+                demoPanel.append("p").text(pair[0] + ": " + pair[1]);    
+        });
+    });
+}
+
+// handles generating plots based on user-selected ID
 function dropDownMenu() {
-    
-    // select the dropdown menu
     var dropdown = d3.select("#selDataset");
 
     d3.json("./samples.json").then((data) => {
@@ -109,13 +126,15 @@ function dropDownMenu() {
             dropdown.append("option").text(name).property("value");
         });
     
-        generatePlot(data.names[0]);
+        generatePlots(data.names[0]);
+        generateInfo(data.names[0]);
     });
 };
 
 // handles dropdown menu change
 function optionChanged(id) {
-    generatePlot(id);
+    generatePlots(id);
+    generateInfo(id);
 };
 
 dropDownMenu();
